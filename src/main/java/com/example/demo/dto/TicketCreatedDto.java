@@ -3,18 +3,8 @@ package com.example.demo.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 
-public class TicketResponseDto {
-    public Integer getId() {
-        return id;
-    }
+public class TicketCreatedDto {
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    @JsonProperty("id")
-    @NotNull
-    private Integer id;
     @JsonProperty("subject")
     @NotNull
     private String subject;

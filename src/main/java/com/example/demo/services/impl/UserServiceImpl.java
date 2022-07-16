@@ -1,13 +1,12 @@
-package com.example.demo.services;
+package com.example.demo.services.impl;
 
 import com.example.demo.dao.UserRepository;
-import com.example.demo.dto.UserPostDto;
-import com.example.demo.dto.UserRequestDto;
 import com.example.demo.dto.UserResponseDto;
+import com.example.demo.dto.UserSignUpDto;
 import com.example.demo.exception.EntityNotFoundException;
 import com.example.demo.mappers.UserMapper;
-import com.example.demo.mappers.UserMapperImpl;
 import com.example.demo.models.User;
+import com.example.demo.services.facade.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -23,21 +22,21 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
+
         this.userRepository = userRepository;
     }
 
     @Override
-    public UserResponseDto save (UserPostDto userPostDto){
-        User user = userRepository.save(
-                userMapper.map(userPostDto)
-        );
+    public UserResponseDto save (UserSignUpDto userSignUpDto) {
+            User user = userRepository.save(userMapper.map(userSignUpDto));
+            return userMapper.map(user);
 
-        return userMapper.map(user);
+
     }
 
     @Override
     public UserResponseDto findById(Integer id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Client not found"));
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("User not found"));
         return userMapper.map(user);
     }
 
@@ -53,16 +52,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto update(UserRequestDto userRequestDto, Integer id) throws ChangeSetPersister.NotFoundException{
+    public UserResponseDto update(UserSignUpDto userSignUpDto, Integer id) throws ChangeSetPersister.NotFoundException{
 
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            User newUser = userMapper.map(userRequestDto);
+            User newUser = userMapper.map(userSignUpDto);
             newUser.setId(id);
+            newUser.setCreationDate(user.get().getCreationDate());
+            newUser.setLastModifiedDate(user.get().getLastModifiedDate());
             User updated = userRepository.save(newUser);
             return userMapper.map(updated);
         } else {
-            throw new EntityNotFoundException("Client Not Found");
+            throw new EntityNotFoundException("User Not Found");
         }
     }
 

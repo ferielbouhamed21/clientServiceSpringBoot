@@ -1,15 +1,16 @@
-package com.example.demo.services;
+package com.example.demo.services.facade;
 
-import com.example.demo.dto.UserPostDto;
 import com.example.demo.dto.UserRequestDto;
 import com.example.demo.dto.UserResponseDto;
+import com.example.demo.dto.UserSignUpDto;
+import com.example.demo.models.User;
 import org.springframework.data.crossstore.ChangeSetPersister;
 
 import java.util.List;
 
 public interface UserService {
 
-    UserResponseDto save (UserPostDto userPostDto);
+    UserResponseDto save (UserSignUpDto userSignUpDto);
 
     UserResponseDto findById(Integer id);
 
@@ -17,7 +18,7 @@ public interface UserService {
 
     void delete(Integer id);
 
-    UserResponseDto update(UserRequestDto userRequestDto, Integer id) throws ChangeSetPersister.NotFoundException;
+    UserResponseDto update(UserSignUpDto userSignUpDto, Integer id) throws ChangeSetPersister.NotFoundException;
 
     List<UserResponseDto> findAll();
 }

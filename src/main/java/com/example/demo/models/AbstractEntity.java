@@ -1,4 +1,5 @@
 package com.example.demo.models;
+import java.sql.Date;
 import java.time.Instant;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -31,6 +32,22 @@ public class AbstractEntity implements Serializable {
 
     public Integer getId() {
         return id;
+    }
+
+    public Instant getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public Instant getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Instant creationDate) {
+        this.creationDate = creationDate;
     }
 
     public void setId(Integer id) {
