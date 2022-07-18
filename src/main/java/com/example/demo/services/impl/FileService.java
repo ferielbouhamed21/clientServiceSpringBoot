@@ -1,10 +1,13 @@
 package com.example.demo.services.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.Map;
 
 @Service
@@ -53,14 +56,32 @@ public class FileService {
 
 
     public Map getFromJson(String filename) throws IOException {
-        //try (FileReader reader = new FileReader(filename)) {
-            //Read JSON file
-          //  Object obj = jsonParser.parse(reader);
 
              Map readValue = new ObjectMapper().readValue(new File(filename),Map.class);
 
         return readValue;
     }
 
+    public void saveToJson(String filename, String key, String value) throws IOException{
+        Map readValue = new ObjectMapper().readValue(new File(filename),Map.class);
+        Object client_id =readValue.get("client_id");
+        Object client_secret =readValue.get("client_secret");
+        Object refresh_token =readValue.get("refresh_token");
+        Object access_token =readValue.get("access_token");
+        Map<String, String> obj = new HashMap<>();
+        obj.put("client_id", client_id.toString());
+        obj.put("client_secret", client_secret.toString());
+        if(key.equals("access_token")){
+            obj.put("access_token",value);
+            obj.put("refresh_token",refresh_token.toString());
+        }
+        else if (key.equals("refresh_token")){
+            obj.put("refresh_token",value);
+            obj.put("access_token",access_token.toString());
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+        objectMapper.writeValue(new File(filename), obj);
+    }
 
 }

@@ -12,9 +12,6 @@ import java.util.Map;
 
 @Service()
 public class ZohoDeskService {
-    //private String code = "1000.8bb5dabd8d996c44fc01c60228b2837a.4a20be7928d7730082f07d1fa55eacd8";
-   // private String client_id = "1000.B905WHUHL2678ACMZCXY986HX48APA";
-   // private String client_secret = "ef6e432f28188fe09c5d4842f3fff4f4caa9669db5";
     private final String scope = "Desk.tickets.ALL";
     private static String access_token;
     private static String refresh_token;
@@ -33,8 +30,10 @@ public class ZohoDeskService {
         JsonNode jsonNode = mapper.readTree(resultAsJsonStr);
         refresh_token = jsonNode.get("refresh_token").asText();
         access_token = jsonNode.get("access_token").asText();
-        fileService.saveToFile(access_token,"access_token.txt");
-        fileService.saveToFile(refresh_token,"refresh_token.txt");
+        //fileService.saveToFile(access_token,"access_token.txt");
+       // fileService.saveToFile(refresh_token,"refresh_token.txt");
+        fileService.saveToJson("credentials.json","refresh_token",refresh_token);
+        fileService.saveToJson("credentials.json","access_token",access_token);
         System.out.println(refresh_token);
         System.out.println(access_token);
     }
@@ -43,7 +42,8 @@ public class ZohoDeskService {
         Map credentials = fileService.getFromJson("credentials.json");
         Object client_id =credentials.get("client_id");
         Object client_secret =credentials.get("client_secret");
-        String url = "https://accounts.zoho.com/oauth/v2/token?refresh_token=" + refresh_token + "&client_id=" + client_id.toString() + "&scope=" + scope + "&client_secret=" + client_secret.toString() + "&grant_type=refresh_token";
+        Object refresh_token =credentials.get("refresh_token");
+        String url = "https://accounts.zoho.com/oauth/v2/token?refresh_token=" + refresh_token.toString() + "&client_id=" + client_id.toString() + "&scope=" + scope + "&client_secret=" + client_secret.toString() + "&grant_type=refresh_token";
         RestTemplate restTemplate = new RestTemplate();
         ObjectMapper mapper = new ObjectMapper();
         String resultAsJsonStr = restTemplate.postForObject(url, "", String.class);
