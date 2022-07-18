@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TicketService {
 
-    TicketResponseDto save (TicketCreatedDto ticketCreatedDto);
+    TicketResponseDto save (TicketCreatedDto ticketCreatedDto) throws Exception;
 
     TicketResponseDto findById(Integer id);
 
@@ -19,4 +19,5 @@ public interface TicketService {
     TicketResponseDto update(TicketCreatedDto ticketCreatedDto, Integer id) throws ChangeSetPersister.NotFoundException;
 
     List<TicketResponseDto> findAll();
+
 }

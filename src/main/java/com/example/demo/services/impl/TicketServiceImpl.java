@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service()
@@ -21,6 +19,9 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     private TicketMapper ticketMapper;
     private TicketRepository ticketRepository;
+    @Autowired
+    private ZohoDeskService zohoDeskService;
+
 
     public TicketServiceImpl(TicketRepository ticketRepository) {
 
@@ -28,7 +29,14 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketResponseDto save (TicketCreatedDto ticketCreatedDto) {
+    public TicketResponseDto save (TicketCreatedDto ticketCreatedDto) throws Exception{
+        Map<String, String> map = new HashMap<>();
+        map.put("subject", ticketCreatedDto.getSubject());
+        map.put("department", ticketCreatedDto.getDepartmentId());
+        map.put("userId",ticketCreatedDto.getUserId().toString());
+        map.put("email", ticketCreatedDto.getEmail());
+        map.put("phone", ticketCreatedDto.getPhone());
+        this.zohoDeskService.createTicket(map);
         TicketsEntity ticket = ticketRepository.save(ticketMapper.map(ticketCreatedDto));
         return ticketMapper.map(ticket);
 
