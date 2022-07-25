@@ -8,8 +8,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Getter
-@Setter
 @Entity
 @Table(name="user")
 public class User extends AbstractEntity {

@@ -12,7 +12,7 @@ import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
-@RequestMapping("ticket")
+@RequestMapping("tickets")
 
 public class TicketController {
 
@@ -20,18 +20,24 @@ public class TicketController {
     private TicketService ticketService;
     @Autowired
     private ZohoDeskService zohoDeskService;
-    private String authToken;
 
     @GetMapping("")
-    @RolesAllowed("admin")
+    //@RolesAllowed("admin")
     public List<TicketResponseDto> getTickets() {
 
         return ticketService.findAll();
     }
+    @PostMapping("")
+    public TicketResponseDto save(
+            @RequestBody() TicketCreatedDto ticketCreatedDto) throws Exception {
+        System.out.println(ticketCreatedDto.getDepartmentId());
+        return ticketService.save(ticketCreatedDto);
+    }
 
     @GetMapping("/token/{code}")
+    //@RolesAllowed("admin")
     public void getToken(@PathVariable("code") String code) throws Exception {
-
+         System.out.println(code);
          zohoDeskService.getAuthToken(code);
 
     }
@@ -42,13 +48,6 @@ public class TicketController {
 
     }
 
-    @PostMapping("")
-    @RolesAllowed({"user", "admin"})
-    public TicketResponseDto save(
-            @RequestBody() TicketCreatedDto ticketCreatedDto) throws Exception {
-        System.out.println(ticketCreatedDto.getDepartmentId());
-        return ticketService.save(ticketCreatedDto);
-    }
 
     @GetMapping("/{id}")
     @RolesAllowed({"user"})

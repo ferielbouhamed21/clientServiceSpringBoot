@@ -1,9 +1,22 @@
 package com.example.demo.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 
 public class TicketResponseDto {
+
+    @NotNull
+    private Integer id;
+    @NotNull
+    private String subject;
+    @NotNull
+    private String departmentId;
+    @NotNull
+    private Integer userId;
+    @NotNull
+    private String email;
+    @NotNull
+    private String phone;
+
     public Integer getId() {
         return id;
     }
@@ -11,25 +24,6 @@ public class TicketResponseDto {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    @JsonProperty("id")
-    @NotNull
-    private Integer id;
-    @JsonProperty("subject")
-    @NotNull
-    private String subject;
-    @JsonProperty("department")
-    @NotNull
-    private String departmentId;
-    @JsonProperty("userId")
-    @NotNull
-    private Integer userId;
-    @JsonProperty("email")
-    @NotNull
-    private String email;
-    @JsonProperty("phone")
-    @NotNull
-    private String phone;
 
     public String getPhone() {
         return phone;

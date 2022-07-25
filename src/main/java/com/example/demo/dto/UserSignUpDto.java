@@ -1,6 +1,4 @@
 package com.example.demo.dto;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,12 +10,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class UserSignUpDto {
-    @JsonProperty("username")
+
     @NotNull
     private String username;
-    @JsonProperty("email")
     @NotNull
     private String email;
+    @NotNull
+    private String phone;
+    @NotNull
+    private String password;
 
     public String getEmail() {
         return email;
@@ -35,9 +36,6 @@ public class UserSignUpDto {
         this.phone = phone;
     }
 
-    @JsonProperty("phone")
-    @NotNull
-    private String phone;
     public String getPassword() {
         return password;
     }
@@ -54,7 +52,4 @@ public class UserSignUpDto {
         this.username = username;
     }
 
-    @JsonProperty("password")
-    @NotNull
-    private String password;
 }

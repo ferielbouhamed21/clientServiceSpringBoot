@@ -1,23 +1,17 @@
 package com.example.demo.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 
 public class TicketCreatedDto {
 
-    @JsonProperty("subject")
     @NotNull
     private String subject;
-    @JsonProperty("department")
     @NotNull
     private String departmentId;
-    @JsonProperty("userId")
     @NotNull
     private Integer userId;
-    @JsonProperty("email")
     @NotNull
     private String email;
-    @JsonProperty("phone")
     @NotNull
     private String phone;
 

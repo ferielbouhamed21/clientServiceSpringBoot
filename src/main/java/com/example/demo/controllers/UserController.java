@@ -11,14 +11,14 @@ import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("users")
 public class UserController {
-    @Autowired
+  @Autowired
     private UserService userService;
 
 
     @GetMapping("")
-    @RolesAllowed("admin")
+   // @RolesAllowed("admin")
     public List<UserResponseDto> getClients() {
         return userService.findAll();
     }

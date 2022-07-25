@@ -4,21 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-
 @Entity
 @Table(name="tickets")
 
 public class TicketsEntity extends AbstractEntity{
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
 
@@ -27,6 +24,29 @@ public class TicketsEntity extends AbstractEntity{
 
     @Column(nullable = false)
     private Long departmentId;
+
+    @Column(nullable = false)
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    @Column(nullable = false)
+    private String phone;
+
 
     public String getSubject() {
         return subject;
@@ -43,7 +63,6 @@ public class TicketsEntity extends AbstractEntity{
     public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
     }
-
 
 
     public User getUser() {

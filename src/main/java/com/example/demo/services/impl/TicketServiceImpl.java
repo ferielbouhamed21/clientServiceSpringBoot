@@ -4,7 +4,7 @@ import com.example.demo.dao.TicketRepository;
 import com.example.demo.dto.TicketCreatedDto;
 import com.example.demo.dto.TicketResponseDto;
 import com.example.demo.exception.EntityNotFoundException;
-import com.example.demo.mappers.TicketMapper;
+import com.example.demo.mappers.TicketMapper1;
 import com.example.demo.models.TicketsEntity;
 import com.example.demo.services.facade.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service()
 public class TicketServiceImpl implements TicketService {
     @Autowired
-    private TicketMapper ticketMapper;
+    private TicketMapper1 ticketMapper;
     private TicketRepository ticketRepository;
     @Autowired
     private ZohoDeskService zohoDeskService;
@@ -33,19 +33,19 @@ public class TicketServiceImpl implements TicketService {
         Map<String, String> map = new HashMap<>();
         map.put("subject", ticketCreatedDto.getSubject());
         map.put("department", ticketCreatedDto.getDepartmentId());
-        map.put("userId",ticketCreatedDto.getUserId().toString());
         map.put("email", ticketCreatedDto.getEmail());
         map.put("phone", ticketCreatedDto.getPhone());
+        map.put("contactId", "753510000000207029");
         this.zohoDeskService.createTicket(map);
-        TicketsEntity ticket = ticketRepository.save(ticketMapper.map(ticketCreatedDto));
-        return ticketMapper.map(ticket);
+        TicketsEntity ticket = ticketRepository.save(ticketMapper.toNewEntity(ticketCreatedDto));
+        return ticketMapper.toDto(ticket);
 
     }
 
     @Override
     public TicketResponseDto findById(Integer id) {
         TicketsEntity ticket = ticketRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ticket not found"));
-        return ticketMapper.map(ticket);
+        return ticketMapper.toDto(ticket);
     }
 
 
@@ -61,12 +61,12 @@ public class TicketServiceImpl implements TicketService {
 
         Optional<TicketsEntity> ticket = ticketRepository.findById(id);
         if (ticket.isPresent()) {
-            TicketsEntity newTicket = ticketMapper.map(ticketCreatedDto);
+            TicketsEntity newTicket = ticketMapper.toNewEntity(ticketCreatedDto);
             newTicket.setId(id);
             newTicket.setCreationDate(ticket.get().getCreationDate());
             newTicket.setLastModifiedDate(ticket.get().getLastModifiedDate());
             TicketsEntity updated = ticketRepository.save(newTicket);
-            return ticketMapper.map(updated);
+            return ticketMapper.toDto(updated);
         } else {
             throw new EntityNotFoundException("Ticket Not Found");
         }
@@ -75,7 +75,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<TicketResponseDto> findAll(){
         return ticketRepository.findAll()
-                .stream().map(el -> ticketMapper.map(el))
+                .stream().map(el -> ticketMapper.toDto(el))
                 .collect(Collectors.toList());
     }
 
@@ -85,7 +85,7 @@ public class TicketServiceImpl implements TicketService {
         List<TicketResponseDto> ticketResponseDtoList = new ArrayList<>();
         for (TicketsEntity ticket:tickets)
         {
-            ticketResponseDtoList.add(ticketMapper.map(ticket)) ;
+            ticketResponseDtoList.add(ticketMapper.toDto(ticket)) ;
         }
         return ticketResponseDtoList;
    }
