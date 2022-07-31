@@ -22,7 +22,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-
     @Override
     public UserResponseDto save (UserSignUpDto userSignUpDto) {
             User user = userRepository.save(userMapper.toNewEntity(userSignUpDto));

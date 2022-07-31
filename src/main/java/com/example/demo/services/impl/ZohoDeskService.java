@@ -1,16 +1,27 @@
 package com.example.demo.services.impl;
+import com.example.demo.services.facade.FileUpload;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.xml.bind.v2.runtime.XMLSerializer;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.GsonJsonParser;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Service()
 public class ZohoDeskService {
@@ -18,7 +29,9 @@ public class ZohoDeskService {
     private static String access_token;
     private static String refresh_token;
     @Autowired
-    private FileService fileService;
+    private JsonFileService fileService;
+    @Autowired
+    private FileUpload fileUpload;
 
     public void getAuthToken(String code) throws Exception {
         Map credentials = fileService.getFromJson("credentials.json");
@@ -54,20 +67,45 @@ public class ZohoDeskService {
     }
 
 
-    public String createTicket(Map<String, String> ticket) throws Exception  {
+    public String createTicket(Map<String, Object> ticket,MultipartFile file) throws Exception  {
         String url = "https://desk.zoho.com/api/v1/tickets";
         String json = new ObjectMapper().writeValueAsString(ticket);
         HttpHeaders headers = new HttpHeaders();
         System.out.println(json);
         headers.add("Authorization", "Zoho-oauthtoken " + getAccessToken());
-//        headers.add("Content-Type", "application/json");
+        // headers.add("Content-Type", "application/json");
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Accept", "*/*");
+        headers.add("orgId", "783870836");
         HttpEntity<String> request = new HttpEntity<>(json, headers);
         RestTemplate restTemplate = new RestTemplate();
-        String resultAsJsonStr = restTemplate.postForObject(url, request, String.class);
-        return resultAsJsonStr;
+        String result =restTemplate.postForObject(url, request, String.class);
+        //System.out.println(result);
+        return attachFileToATicket("753510000000252088",file);
+       // return result;
+    }
 
+    public String attachFileToATicket(String ticketId, MultipartFile file) throws Exception{
+
+        String url ="https://desk.zoho.com/api/v1/tickets/"+ticketId+"/attachments";
+
+        LinkedMultiValueMap<String, String> fileMap = new LinkedMultiValueMap<>();
+        fileMap.add("Content-disposition", "form-data; name=file; filename=" + file.getOriginalFilename());
+        HttpEntity<byte[]> doc = new HttpEntity<>(file.getBytes(), fileMap);
+
+        LinkedMultiValueMap<String, Object> multipartReqMap = new LinkedMultiValueMap<>();
+        multipartReqMap.add("file", doc);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Zoho-oauthtoken " + getAccessToken());
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.add("Accept", "*/*");
+        HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(multipartReqMap, headers);
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.exchange(url, HttpMethod.POST, request, String.class).getBody();
+        String uuid = UUID.randomUUID().toString();
+        fileUpload.putObject(uuid,file);
+        return result;
     }
 
 }

@@ -2,16 +2,13 @@ package com.example.demo.services.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.stereotype.Service;
-
 import java.io.*;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class FileService {
+public class JsonFileService {
     public void saveToFile(String str, String fileName){
         File file = new File(fileName);
         if(!file.exists()){

@@ -1,6 +1,7 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.dao.TicketRepository;
+import com.example.demo.dto.TicketControllerDto;
 import com.example.demo.dto.TicketCreatedDto;
 import com.example.demo.dto.TicketResponseDto;
 import com.example.demo.exception.EntityNotFoundException;
@@ -10,6 +11,8 @@ import com.example.demo.services.facade.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,17 +32,36 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public TicketResponseDto save (TicketCreatedDto ticketCreatedDto) throws Exception{
-        Map<String, String> map = new HashMap<>();
-        map.put("subject", ticketCreatedDto.getSubject());
-        map.put("department", ticketCreatedDto.getDepartmentId());
-        map.put("email", ticketCreatedDto.getEmail());
-        map.put("phone", ticketCreatedDto.getPhone());
+    public TicketResponseDto save (TicketControllerDto ticketControllerDto) throws Exception{
+        Map<String, Object> map = new HashMap<>();
+       /* map.put("subject", ticketControllerDto.getSubject());
+        map.put("departmentId", ticketControllerDto.getDepartmentId());
+        map.put("email", ticketControllerDto.getEmail());
+        map.put("phone", ticketControllerDto.getPhone());
         map.put("contactId", "753510000000207029");
-        this.zohoDeskService.createTicket(map);
-        TicketsEntity ticket = ticketRepository.save(ticketMapper.toNewEntity(ticketCreatedDto));
-        return ticketMapper.toDto(ticket);
-
+        map.put("description", ticketControllerDto.getDescription());
+        map.put("status", "Open");
+        map.put("classification", ticketControllerDto.getClassification());
+        map.put("category", ticketControllerDto.getCategory());
+        map.put("language", ticketControllerDto.getLanguage());
+        map.put("assigneeId","753510000000139001");
+        map.put("productId",ticketControllerDto.getProductId());*/
+        map.put("subject", "jhqshkj");
+        map.put("departmentId", "753510000000006907");
+        map.put("email", "ksdjfl@kqsjdl.com");
+        map.put("phone", "53465463");
+        map.put("contactId", "753510000000207029");
+        map.put("description", "kjlmkjmjk");
+        map.put("status", "Open");
+        map.put("classification", "");
+        map.put("category", "");
+        map.put("language", "English");
+        map.put("assigneeId","753510000000139001");
+        map.put("productId","");
+        this.zohoDeskService.createTicket(map,ticketControllerDto.getFile());
+        //TicketsEntity ticket = ticketRepository.save(ticketMapper.toNewEntity(ticketCreatedDto));
+        //return ticketMapper.toDto(ticket);
+        return new TicketResponseDto();
     }
 
     @Override

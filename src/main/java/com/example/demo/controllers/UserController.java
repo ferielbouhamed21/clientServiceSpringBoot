@@ -57,4 +57,5 @@ public class UserController {
     public UserResponseDto update(@RequestBody() UserSignUpDto userSignUpDto, @PathVariable() Integer id) throws ChangeSetPersister.NotFoundException {
         return userService.update(userSignUpDto, id);
     }
+
 }
