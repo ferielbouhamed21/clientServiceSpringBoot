@@ -35,9 +35,6 @@ public class TicketsEntity extends AbstractEntity{
     private String language;
 
     @Column(nullable = false)
-    private String productId;
-
-    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false)
@@ -92,13 +89,6 @@ public class TicketsEntity extends AbstractEntity{
         this.description = description;
     }
 
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
 
     public String getLanguage() {
         return language;

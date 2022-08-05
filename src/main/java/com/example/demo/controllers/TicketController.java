@@ -1,24 +1,22 @@
 package com.example.demo.controllers;
 
-import com.example.demo.dto.TicketControllerDto;
 import com.example.demo.dto.TicketCreatedDto;
 import com.example.demo.dto.TicketResponseDto;
 import com.example.demo.services.facade.FileUpload;
 import com.example.demo.services.facade.TicketService;
 import com.example.demo.services.impl.ZohoDeskService;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.minio.errors.MinioException;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
@@ -43,12 +41,12 @@ public class TicketController {
 
         return ticketService.findAll();
     }
+
+
     @PostMapping("")
-   /* public TicketResponseDto save(
-            @RequestBody() TicketCreatedDto ticketCreatedDto,MultipartFile file) throws Exception {*/
-        public TicketResponseDto save(
-            @ModelAttribute()TicketControllerDto ticketControllerDto) throws Exception {
-        return ticketService.save(ticketControllerDto);
+    public String save(
+            @RequestBody() TicketCreatedDto ticketCreatedDto) throws Exception {
+        return ticketService.save(ticketCreatedDto);
     }
 
     @GetMapping("/token/{code}")
@@ -56,18 +54,17 @@ public class TicketController {
     public void getToken(@PathVariable("code") String code) throws Exception {
          System.out.println(code);
          zohoDeskService.getAuthToken(code);
-
     }
+
     @GetMapping("/token")
     public void getAccessToken() throws Exception {
 
          zohoDeskService.getAccessToken();
-
     }
 
 
     @GetMapping("/{id}")
-    @RolesAllowed({"user"})
+    //@RolesAllowed({"user"})
     public TicketResponseDto findById(@PathVariable("id") Integer id) {
 
         return ticketService.findById(id);
@@ -75,24 +72,25 @@ public class TicketController {
 
 
     @GetMapping("/user/{id}")
-    @RolesAllowed({"user", "admin"})
+    //@RolesAllowed({"user", "admin"})
     public List<TicketResponseDto> findByUser(@PathVariable() Integer id) {
         return ticketService.findByUser(id);
     }
 
     @DeleteMapping("/{id}")
-    @RolesAllowed("user")
+    //@RolesAllowed("user")
     public void delete(@PathVariable() Integer id) {
         ticketService.delete(id);
     }
 
 
     @PutMapping("/{id}")
-    @RolesAllowed("user")
+    //@RolesAllowed("user")
     public TicketResponseDto update(@RequestBody() TicketCreatedDto ticketCreatedDto, @PathVariable() Integer id) throws ChangeSetPersister.NotFoundException {
         return ticketService.update(ticketCreatedDto, id);
     }
 
+    //upload to minio
     @PostMapping("/upload")
     public ResponseEntity<?> handleFileUpload(@RequestParam("file") MultipartFile file ) throws Exception{
         String uuid = UUID.randomUUID().toString();
@@ -109,6 +107,7 @@ public class TicketController {
         }
     }
 
+    //download from minio
     @GetMapping("/download/{fileId}")
     public void getObject(@PathVariable("fileId") String fileId, HttpServletResponse response) throws MinioException, IOException {
         InputStream inputStream = fileUpload.getObject(fileId);
@@ -121,9 +120,16 @@ public class TicketController {
         IOUtils.copy(inputStream, response.getOutputStream());
         response.flushBuffer();
     }
-    @PostMapping("/attachement/{fileId}")
-    public String attachFileToTicket(@RequestParam("file") MultipartFile file ,@PathVariable("fileId") String fileId) throws Exception{
-        return zohoDeskService.attachFileToATicket(fileId,file);
+
+    @PostMapping("/attachement/{ticketId}")
+    public String attachFileToTicket(@RequestParam("file") MultipartFile file ,@PathVariable("ticketId") String ticketId) throws Exception{
+        return zohoDeskService.attachFileToATicket(ticketId,file);
+    }
+
+    //get ticket by status
+    @GetMapping("/status/{status}")
+    public List<TicketResponseDto> getTicketByStatus(@PathVariable("status") String status) {
+        return ticketService.findByStatus(status);
     }
 
 }

@@ -6,6 +6,7 @@ import com.example.demo.dto.UserSignUpDto;
 import com.example.demo.models.User;
 import org.springframework.data.crossstore.ChangeSetPersister;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface UserService {
@@ -21,5 +22,6 @@ public interface UserService {
     UserResponseDto update(UserSignUpDto userSignUpDto, Integer id) throws ChangeSetPersister.NotFoundException;
 
     List<UserResponseDto> findAll();
+
 }
 

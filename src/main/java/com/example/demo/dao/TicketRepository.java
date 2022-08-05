@@ -13,4 +13,7 @@ public interface TicketRepository extends JpaRepository <TicketsEntity, Integer>
     @Query(value = "SELECT * FROM tickets WHERE user_id in (select id from user where id = id)", nativeQuery = true)
     public Iterable<TicketsEntity> findByUserNative(@Param("id") Integer id);
 
+    //get ticket by status
+    @Query(value = "SELECT * FROM tickets WHERE status = :status", nativeQuery = true)
+    public Iterable<TicketsEntity> findByStatusNative(@Param("status") String status);
 }

@@ -19,8 +19,7 @@ public class TicketCreatedDto {
     private String status;
     @NotNull
     private String language;
-    @NotNull
-    private String productId;
+
     @NotNull
     private String description;
     @NotNull
@@ -86,13 +85,6 @@ public class TicketCreatedDto {
         this.language = language;
     }
 
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
 
     public String getDescription() {
         return description;

@@ -9,7 +9,13 @@ import com.example.demo.models.User;
 import com.example.demo.services.facade.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.stream.Collectors;
 
 import java.util.List;
@@ -69,5 +75,6 @@ public class UserServiceImpl implements UserService {
                 .stream().map(el -> userMapper.toDto(el))
                 .collect(Collectors.toList());
     }
+
 
 }
