@@ -1,10 +1,10 @@
 package com.example.demo.controllers;
 
+import com.example.demo.dto.UserHolder;
 import com.example.demo.dto.UserResponseDto;
 import com.example.demo.dto.UserSignUpDto;
 import com.example.demo.services.facade.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -13,49 +13,31 @@ import java.util.List;
 @RestController
 @RequestMapping("users")
 public class UserController {
-  @Autowired
+    @Autowired
     private UserService userService;
-
+    @Autowired
+    UserHolder user;
 
     @GetMapping("")
-   // @RolesAllowed("admin")
+    // @RolesAllowed("admin")
     public List<UserResponseDto> getClients() {
         return userService.findAll();
     }
 
 
     @PostMapping("")
-    @RolesAllowed({"user","admin"})
+    @RolesAllowed({"user", "admin"})
     public UserResponseDto save(
-             @RequestBody() UserSignUpDto userSignUpDto) {
+            @RequestBody() UserSignUpDto userSignUpDto) {
         return userService.save(userSignUpDto);
     }
 
-    @GetMapping("/{id}")
-    //@RolesAllowed({"user","admin"})
-    public UserResponseDto findById(@PathVariable("id") Integer id) {
-             return userService.findById(id);
-    }
 
-
-    @GetMapping("/username/{username}")
+    @GetMapping("/username")
     @RolesAllowed("user")
-    public UserResponseDto findByUsername (@PathVariable() String username) {
-        return userService.findByUsername(username);
+    public UserResponseDto findByUsername() {
+        return userService.findByUsername(user.getUsername());
     }
 
-    @DeleteMapping("/{id}")
-    @RolesAllowed("user")
-    public void delete(@PathVariable() Integer id) {
-        userService.delete(id);
-    }
-
-
-
-    @PutMapping("/{id}")
-    @RolesAllowed("user")
-    public UserResponseDto update(@RequestBody() UserSignUpDto userSignUpDto, @PathVariable() Integer id) throws ChangeSetPersister.NotFoundException {
-        return userService.update(userSignUpDto, id);
-    }
 
 }

@@ -1,6 +1,5 @@
 package com.example.demo.controllers.errors.apiError;
 
-import com.example.demo.controllers.errors.apiError.ApiSubError;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 

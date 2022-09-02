@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 import javax.persistence.*;
 
 @Data
@@ -11,12 +12,22 @@ import javax.persistence.*;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name="tickets")
+@Table(name = "tickets")
 
-public class TicketsEntity extends AbstractEntity{
+public class TicketsEntity extends AbstractEntity {
+    @Id
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "username")
     private User user;
 
     @Column(nullable = false)
@@ -25,8 +36,6 @@ public class TicketsEntity extends AbstractEntity{
     @Column(nullable = false)
     private Long departmentId;
 
-    @Column(nullable = false)
-    private String email;
 
     @Column(nullable = false)
     private String status;
@@ -46,16 +55,6 @@ public class TicketsEntity extends AbstractEntity{
     @Column(nullable = false)
     private String category;
 
-    /*@Embedded
-    private Contact contact;
-
-    public Contact getContact() {
-        return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }*/
 
     public String getClassification() {
         return classification;
@@ -105,26 +104,6 @@ public class TicketsEntity extends AbstractEntity{
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    @Column(nullable = false)
-    private String phone;
-
 
     public String getSubject() {
         return subject;

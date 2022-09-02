@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.models.User;
 import com.sun.istack.NotNull;
 
 
@@ -10,11 +11,10 @@ public class TicketCreatedDto {
     @NotNull
     private String departmentId;
     @NotNull
-    private Integer userId;
+    private User user;
     @NotNull
-    private String email;
-    @NotNull
-    private String phone;
+    private String id;
+
     @NotNull
     private String status;
     @NotNull
@@ -29,28 +29,20 @@ public class TicketCreatedDto {
     @NotNull
     private String category;
 
-    public String getPhone() {
-        return phone;
+    public String getId() {
+        return id;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public User getUser() {
+        return user;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getDepartmentId() {

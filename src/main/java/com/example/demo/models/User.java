@@ -1,6 +1,8 @@
 package com.example.demo.models;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,41 +11,20 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User extends AbstractEntity {
 
-    public String getPassword() {
-        return password;
-    }
-
-    public List<TicketsEntity> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<TicketsEntity> tickets) {
-        this.tickets = tickets;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
+    @Id
     @Column(nullable = false)
     private String username;
-    @Column(nullable = false)
-    private String password;
+
     @Column(nullable = false)
     private String phone;
     @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
+    private String contactId;
 
     public String getEmail() {
         return email;
@@ -59,6 +40,30 @@ public class User extends AbstractEntity {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<TicketsEntity> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<TicketsEntity> tickets) {
+        this.tickets = tickets;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(String contactId) {
+        this.contactId = contactId;
     }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

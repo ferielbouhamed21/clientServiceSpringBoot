@@ -1,9 +1,6 @@
 package com.example.demo.models;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-
-public class Contact extends AbstractEntity{
+public class Contact extends AbstractEntity {
 
     private String lastName;
 

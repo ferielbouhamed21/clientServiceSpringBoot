@@ -6,5 +6,5 @@ import com.example.demo.models.User;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface UserMapper1 extends AbstractMapper<UserResponseDto, UserSignUpDto, User>{
+public interface UserMapper1 extends AbstractMapper<UserResponseDto, UserSignUpDto, User> {
 }

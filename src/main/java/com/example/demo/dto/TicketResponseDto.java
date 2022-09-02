@@ -6,17 +6,22 @@ import com.sun.istack.NotNull;
 public class TicketResponseDto {
 
     @NotNull
-    private Integer id;
+    private String id;
     @NotNull
     private String subject;
     @NotNull
+    private String creationDate;
+
+    @NotNull
+    private String lastModifiedDate;
+
+    @NotNull
     private String departmentId;
+
+
     @NotNull
     private Integer userId;
-    @NotNull
-    private String email;
-    @NotNull
-    private String phone;
+
     @NotNull
     private String status;
     @NotNull
@@ -31,29 +36,14 @@ public class TicketResponseDto {
     @NotNull
     private String category;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public Integer getUserId() {
         return userId;
@@ -96,7 +86,6 @@ public class TicketResponseDto {
     }
 
 
-
     public String getDescription() {
         return description;
     }
@@ -128,4 +117,22 @@ public class TicketResponseDto {
     public void setCategory(String category) {
         this.category = category;
     }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public String getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(String lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+
 }

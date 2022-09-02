@@ -7,6 +7,7 @@ import io.minio.PutObjectArgs;
 import io.minio.errors.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
@@ -15,16 +16,16 @@ import java.security.NoSuchAlgorithmException;
 @Service
 public class FileUploadImpl implements FileUpload {
 
-    private static String bucketName="data";
-    private static  String endpoint ="http://172.22.224.1:9000";
-    private static  int port =9000;
-    private static  boolean secure =false;
-    private static  String accessKey ="hd92j67z92dHJpRK";
-    private static  String secretKey ="rMzIlW9gbFkVeRl8SWVkrx0DPffFgKEh";
+    private static String bucketName = "data";
+    private static String endpoint = "http://127.0.0.1:9000";
+    private static int port = 9000;
+    private static boolean secure = false;
+    private static String accessKey = "minioadmin";
+    private static String secretKey = "minioadmin";
     private static MinioClient minioClient = MinioClient.builder()
-                .endpoint(endpoint , port , secure)
-                .credentials(accessKey, secretKey)
-                .build();
+            .endpoint(endpoint, port, secure)
+            .credentials(accessKey, secretKey)
+            .build();
 
     public void putObject(String objectId, MultipartFile file) throws Exception {
 
@@ -51,7 +52,7 @@ public class FileUploadImpl implements FileUpload {
         }
     }
 
-    public InputStream getObject( String fileId) {
+    public InputStream getObject(String fileId) {
         try {
             return minioClient.getObject(GetObjectArgs.builder().bucket(bucketName).object(fileId).build());
         } catch (InvalidKeyException | ErrorResponseException | InsufficientDataException | InternalException

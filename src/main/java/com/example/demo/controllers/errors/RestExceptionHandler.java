@@ -24,7 +24,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 
-    public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
         return new ResponseEntity<>(apiError, apiError.getStatus());
@@ -46,6 +46,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
         String error = ex.getParameterName() + " parameter is missing";
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
     }
+
     /**
      * Handle HttpMediaTypeNotSupportedException. This one triggers when JSON is invalid as well.
      *
@@ -74,13 +75,14 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
      * @param ex the EntityNotFoundException
      * @return the ApiError object
      */
-        @ExceptionHandler(EntityNotFoundException.class)
-        protected ResponseEntity<Object> handleEntityNotFound(
-                EntityNotFoundException ex) {
-            ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
-            apiError.setMessage(ex.getMessage());
-            return buildResponseEntity(apiError);
-        }
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFound(
+            EntityNotFoundException ex) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
+        apiError.setMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
     /**
      * Handle HttpMessageNotReadableException. Happens when request JSON is malformed.
      *
@@ -96,6 +98,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
         String error = "Malformed JSON request";
         return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
     }
+
     /**
      * Handle HttpMessageNotWritableException.
      *

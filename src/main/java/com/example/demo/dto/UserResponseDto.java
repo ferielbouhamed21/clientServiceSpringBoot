@@ -1,4 +1,5 @@
 package com.example.demo.dto;
+
 import com.sun.istack.NotNull;
 
 public class UserResponseDto {
@@ -11,6 +12,9 @@ public class UserResponseDto {
     private String phone;
     @NotNull
     private String email;
+
+    @NotNull
+    private String contactId;
 
     public String getPhone() {
         return phone;
@@ -42,5 +46,14 @@ public class UserResponseDto {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+
+    public String getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(String contactId) {
+        this.contactId = contactId;
     }
 }

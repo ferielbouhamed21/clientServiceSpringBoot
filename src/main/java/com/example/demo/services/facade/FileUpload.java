@@ -6,7 +6,7 @@ import java.io.InputStream;
 
 public interface FileUpload {
 
-    public void putObject(String objectId,MultipartFile file) throws Exception;
+    public void putObject(String objectId, MultipartFile file) throws Exception;
     public InputStream getObject( String fileId);
 
 }
